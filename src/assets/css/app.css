@@ -1,0 +1,48 @@
+#root {
+   max-width: 1360px;
+   margin: 0 auto;
+}
+
+* {
+   box-sizing: border-box;
+   outline: 0;
+}
+
+.aside-nav {
+
+   &>div,
+   &>button {
+      margin: 0;
+   }
+}
+
+.group-input-order:first-child input {
+   padding-right: 8px;
+}
+
+.grid-search-stock {
+   &>div:first-child {
+      grid-column: span 3 / span 3;
+   }
+
+   button {
+      grid-column: span 2 / span 2;
+   }
+}
+
+.products-table,
+.inventory-table {
+   button {
+      cursor: pointer;
+   }
+
+   .toggle-btn {
+      span {
+         translate: 4px;
+      }
+
+      .toggle-active {
+         translate: 24px;
+      }
+   }
+}

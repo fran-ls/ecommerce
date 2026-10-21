@@ -1,0 +1,17 @@
+export const PRODUCT_DB_FIELDS: readonly string[] = [
+   'id',
+   'name',
+   'description',
+   'key_features',
+   'stock',
+   'purchase_price',
+   'sale_price',
+   'offer_price',
+   'brand',
+   'color',
+   'stock_status',
+   'status_tag',
+   'category_id',
+   'is_offer',
+   'is_stock',
+];
