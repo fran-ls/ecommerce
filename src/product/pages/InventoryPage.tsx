@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RefreshCcw, SearchIcon } from "lucide-react";
-import type { Product } from "../types/product.types";
+import { STOCK_STATUS, type Product } from "../types/product.types";
 import { formatCurrency } from "../../shared/utils/formatCurrency";
 import Header from "../../shared/components/Header";
 import InventoryItem from "../components/InventoryItem";
@@ -14,6 +14,10 @@ const InventoryPage = () => {
    const [products, setProducts] = useState<Product[]>([]);
    const [filtereds, setFiltereds] = useState<Product[]>([]);
    const [isLoading, setIsLoading] = useState(false);
+   const [stockFilter, setStockFilter] = useState({
+      label: 'Todo',
+      value: 'all'
+   });
 
    const { getProducts } = useProduct();
 
@@ -30,12 +34,14 @@ const InventoryPage = () => {
 
    useEffect(() => {
       const data = products.filter(item => {
+         const status = stockFilter.label;
          const name = item.name.toLowerCase();
-         return name.includes(query.toLowerCase())
+         const exist = query ? name.includes(query.toLowerCase()) : true;
+         return status !== 'Todo' ? item.stockStatus === status && exist : exist;
       });
 
       setFiltereds(data);
-   }, [query]);
+   }, [query, stockFilter]);
 
    if (isLoading) return <Loader />;
 
@@ -58,6 +64,26 @@ const InventoryPage = () => {
                      placeholder="Buscar por nombre..."
                      type="search"
                   />
+               </div>
+
+               <div>
+                  <select
+                     value={stockFilter.value}
+                     onChange={(e) => setStockFilter({
+                        label: (STOCK_STATUS as any)[e.target.value] || 'Todo',
+                        value: e.target.value
+                     })}
+                     className="w-full min-w-25 border rounded px-2 py-[5.5px] h-9.5 text-sm bg-white"
+                  >
+                     <option value="all">Todos</option>
+                     {
+                        Object.entries(STOCK_STATUS).map(([k, status]) => (
+                           <option value={k} key={k}>
+                              {status}
+                           </option>
+                        ))
+                     }
+                  </select>
                </div>
 
                <button
@@ -87,7 +113,7 @@ const InventoryPage = () => {
                      {
                         !isLoading
                            ?
-                           (query.trim() !== '' ? filtereds : products).map((product) => (
+                           ((query.trim() !== '' || stockFilter.value !== 'all') ? filtereds : products).map((product) => (
                               <InventoryItem
                                  product={product}
                                  key={product.id}
