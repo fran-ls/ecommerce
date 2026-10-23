@@ -53,7 +53,7 @@ const OrdersPage = () => {
                </div>
 
                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase">Fitrar por estado</label>
+                  <label className="text-xs font-bold text-slate-500 uppercase">Filtrar por estado</label>
                   <select
                      onChange={(e) => setFilters({
                         filter: 'status',
